@@ -59,7 +59,7 @@ class ViewController: UIViewController, UITableViewDataSource {
           }
         }
       }
-      
+      //change comments around
       /*
       if let jsonPath = NSBundle.mainBundle().pathForResource("tweet", ofType: "json") { //looks for match in bundle for "tweet" & "json" thus tweet.json
         if let jsonData = NSData(contentsOfFile: jsonPath) { //says: use following code if jsonPath retrieved by NSData's contentsOfFile
