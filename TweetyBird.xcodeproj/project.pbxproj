@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B81083E61A5DDD61001FD6CF /* NetworkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81083E51A5DDD61001FD6CF /* NetworkController.swift */; };
 		B8DCEB971A5B357E00406822 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCEB961A5B357E00406822 /* AppDelegate.swift */; };
 		B8DCEB991A5B357E00406822 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8DCEB981A5B357E00406822 /* ViewController.swift */; };
 		B8DCEB9C1A5B357E00406822 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8DCEB9A1A5B357E00406822 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B81083E51A5DDD61001FD6CF /* NetworkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkController.swift; sourceTree = "<group>"; };
 		B8DCEB911A5B357E00406822 /* TweetyBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TweetyBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8DCEB951A5B357E00406822 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8DCEB961A5B357E00406822 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				B8DCEB981A5B357E00406822 /* ViewController.swift */,
+				B81083E51A5DDD61001FD6CF /* NetworkController.swift */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B81083E61A5DDD61001FD6CF /* NetworkController.swift in Sources */,
 				B8DCEBBB1A5B35E200406822 /* Tweet.swift in Sources */,
 				B8DCEB991A5B357E00406822 /* ViewController.swift in Sources */,
 				B8DCEB971A5B357E00406822 /* AppDelegate.swift in Sources */,
@@ -441,6 +445,7 @@
 				B8DCEBB21A5B357E00406822 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B8DCEBB31A5B357E00406822 /* Build configuration list for PBXNativeTarget "TweetyBirdTests" */ = {
 			isa = XCConfigurationList;
@@ -449,6 +454,7 @@
 				B8DCEBB51A5B357E00406822 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
