@@ -26,10 +26,10 @@ class ViewController: UIViewController, UITableViewDataSource {
           // create accounts property with accountStore type values
           let accounts = accountStore.accountsWithAccountType(accountType)  // Why this line?
           if !accounts.isEmpty {                                            // if it's not empty
-            let twitterAccount = accounts.first as ACAccount                // ASK BRAD how first is determined
+            let twitterAccount = accounts.first as ACAccount
             // setup url we'll make attempt to
             let requestURL = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
-            let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil) //SLServiceTypeTwitter == enum //BRAD
+            let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil)
             twitterRequest.account = twitterAccount
             twitterRequest.performRequestWithHandler() { (data, response, error) -> Void in
               switch response.statusCode {
@@ -60,7 +60,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         }
       }
       //change comments around
-      /*
+      /* DAY 1 junk!
       if let jsonPath = NSBundle.mainBundle().pathForResource("tweet", ofType: "json") { //looks for match in bundle for "tweet" & "json" thus tweet.json
         if let jsonData = NSData(contentsOfFile: jsonPath) { //says: use following code if jsonPath retrieved by NSData's contentsOfFile
           var error : NSError? //var for error param, next line
