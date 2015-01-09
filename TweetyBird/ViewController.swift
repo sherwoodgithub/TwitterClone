@@ -51,6 +51,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     return cell
   }
+  
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    println(indexPath.row)
+    
+    let tweetVC = self.storyboard?.instantiateViewControllerWithIdentifier("TWEET_VC") as TweetViewController
+    tweetVC.networkController = self.networkController
+    tweetVC.tweet = self.tweets[indexPath.row]
+    self.navigationController?.pushViewController(tweetVC, animated: true)
+  }
+  
 }
 
 
