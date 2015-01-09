@@ -13,14 +13,24 @@ class Tweet {
   var userName : String
   var imageURL : String
   var image : UIImage?
+  var id : String
+  var favoriteCount : String?
   
-  // the dictionary passed in: STRING==KEY, ANYOBJECT==VAL
   init ( _ jsonDictionary : [String : AnyObject ] ) {
     self.text = jsonDictionary["text"] as String
-    // pull ref to inner dictionary
     let userDictionary = jsonDictionary["user"] as [String: AnyObject]
-    // access values in inner dictionary
     self.userName = userDictionary["name"] as String
     self.imageURL = userDictionary["profile_image_url"] as String
+    self.id = userDictionary["id_str"] as String
+    
+    println(userDictionary)
+    
+    if jsonDictionary["in_reply_to_user_id_str"] is NSNull {
+      println("NSNull")
+    }
+  }
+  func updateWihInfo(infoDictionary : [String : AnyObject]) {
+    let favoriteNumber = infoDictionary["favorite_count"] as Int
+    self.favoriteCount = "\(favoriteNumber)"
   }
 }

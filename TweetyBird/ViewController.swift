@@ -11,14 +11,64 @@ import Accounts
 import Social
 
 
-class ViewController: UIViewController, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
   @IBOutlet weak var tableView: UITableView!
   var tweets = [Tweet]()
   let networkController = NetworkController()
   
-    override func viewDidLoad() {
-      super.viewDidLoad()
+  override func viewDidLoad() {
+    super.viewDidLoad()
+      
+    self.tableView.dataSource = self
+    self.tableView.delegate = self
+    self.networkController.fetchHomeTimeLine { (tweets, errorString) -> () in
+      if errorString == nil {
+        self.tweets = tweets!
+        self.tableView.reloadData()
+      }
+    }
+  }
+
+  override func viewDidAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    println(self.tweets.count)
+    
+  }
+  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return self.tweets.count
+  }
+  
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL", forIndexPath : indexPath) as TweetCell
+    let tweet = self.tweets[indexPath.row]
+    cell.tweetLabel.text = tweet.text
+    cell.userNameLabel.text = tweet.userName
+    if let imageURL = NSURL(string: tweet.imageURL) {
+      if let imageData = NSData(contentsOfURL: imageURL) {
+        cell.tweetImageView.image = UIImage(data: imageData)
+      }
+    }
+    return cell
+  }
+}
+
+
+
+
+
+  // cellForRowAtIndexPath
+  /*
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let tweetVC = self.storyboard?.instantiateViewControllerWithIdentifier("tweetVC") as TweetViewController
+    
+    self.navigationController?.pushViewController(tweetVC, animated: true)
+    
+  }
+  
+  override func override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+  } */
 /*DAY 2 junk! */
 //      let accountStore = ACAccountStore() // create an empty ACAccount store class (empty because of open/close parens
 //      let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter) // what type of ACAccountStore? Twitter (see: .accountTypeWithAccount... )
@@ -44,12 +94,12 @@ class ViewController: UIViewController, UITableViewDataSource {
 //                    if let jsonDictionary = object as? [String: AnyObject] {
 //                      let tweet = Tweet(jsonDictionary) // Tweet(jsonDictionary) runs the Tweet class init
 //                      self.tweets.append(tweet)
-//                      
+//
 //                      NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in // tells SLRequest to go back to main thread
 //                        self.tableView.reloadData()       // only going to happen once back on main thread... updating user with new data we just parsed through
 //                      })
 //                    }
-//                  } 
+//                  }
 //                }
 //              case 300...599 :
 //                println("Shit, my bad")
@@ -60,49 +110,19 @@ class ViewController: UIViewController, UITableViewDataSource {
 //          }
 //        }
 //      }
-      //change comments around
-      /* DAY 1 junk!
-      if let jsonPath = NSBundle.mainBundle().pathForResource("tweet", ofType: "json") { //looks for match in bundle for "tweet" & "json" thus tweet.json
-        if let jsonData = NSData(contentsOfFile: jsonPath) { //says: use following code if jsonPath retrieved by NSData's contentsOfFile
-          var error : NSError? //var for error param, next line
-          if let jsonArray = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: &error) as? [AnyObject] { // ( param jsonData = from local bundle )
-            for object in jsonArray {
-              if let jsonDictionary = object as? [String: AnyObject] {
-                let tweet = Tweet(jsonDictionary) // remember: this jsonDictionary reflects class Tweet's jsonDictionary's TYPE (because of previous lines this file), not it's NAME. What you call this.jsonDictionary means nil
-                self.tweets.append(tweet)
-              }
-            }
-          }
-        }
-      } */
-      
-      self.tableView.dataSource = self
-      self.networkController.fetchHomeTimeLine { (tweets, errorString) -> () in
-        if errorString == nil {
-          self.tweets = tweets!
-          self.tableView.reloadData()
-        }
-        
-      } // NetworkController.fetch...
-    } //viewDidLoad()
-
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.tweets.count
-  }
-  
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL", forIndexPath : indexPath) as TweetCell
-    let tweet = self.tweets[indexPath.row]
-    cell.tweetLabel.text = tweet.text
-    // allows iOS to get location tweet image URL
-    if let imageURL = NSURL(string: tweet.imageURL) {
-      //downloads the data
-      if let imageData = NSData(contentsOfURL: imageURL) {
-        cell.tweetImageView.image = UIImage(data: imageData)
-      } // NSData
-    } // NSURL
-    
-    return cell
-  } // cellForRowAtIndexPath
+//change comments around
+/* DAY 1 junk!
+if let jsonPath = NSBundle.mainBundle().pathForResource("tweet", ofType: "json") { //looks for match in bundle for "tweet" & "json" thus tweet.json
+if let jsonData = NSData(contentsOfFile: jsonPath) { //says: use following code if jsonPath retrieved by NSData's contentsOfFile
+var error : NSError? //var for error param, next line
+if let jsonArray = NSJSONSerialization.JSONObjectWithData(jsonData, options: nil, error: &error) as? [AnyObject] { // ( param jsonData = from local bundle )
+for object in jsonArray {
+if let jsonDictionary = object as? [String: AnyObject] {
+let tweet = Tweet(jsonDictionary) // remember: this jsonDictionary reflects class Tweet's jsonDictionary's TYPE (because of previous lines this file), not it's NAME. What you call this.jsonDictionary means nil
+self.tweets.append(tweet)
 }
+}
+}
+}
+} */
 
