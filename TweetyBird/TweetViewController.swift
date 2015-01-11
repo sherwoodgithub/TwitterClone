@@ -22,7 +22,7 @@ class TweetViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.tweetTextLabel.text = tweet.text
-    self.userNameLabel.text = tweet.text
+    self.userNameLabel.text = tweet.userName
     self.imageView.image = tweet.image
     
     self.networkVC.fetchInfoForTweet (tweet.id, completionHandler: { (infoDictionary, errorDescription) -> () in
