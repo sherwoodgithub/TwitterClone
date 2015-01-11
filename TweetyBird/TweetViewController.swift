@@ -17,7 +17,7 @@ class TweetViewController: UIViewController {
   @IBOutlet weak var imageView : UIImageView!
   @IBOutlet weak var favoriteLabel : UILabel!
   
-  var networkVC : NetworkController!
+  var networkVC: NetworkController!
   
   override func viewDidLoad() {
     super.viewDidLoad()

@@ -65,13 +65,37 @@ class NetworkController {
             case 300...599 :
               println("Shit, our bad")
             default :
-              println("Default")
+              println("Default for fetchHomeTimeLine")
             } // switch
           } // performRequestWithHandler
         } // if accounts empty
       } // if granted
     } // requestAccessToAccountWithType
   } // fetchHomeTimeLine
+  
+  func fetchTimelineForUser(userID : String, completionHandler : ([Tweet]?, String? ) -> () ) {
+    let requestURL = NSURL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json?user_id=\(userID)")
+    let request = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL!, parameters: nil)
+    request.account = self.twitterAccount
+    request.performRequestWithHandler { ( data, response, error ) -> Void in
+      if error == nil {
+        switch response.statusCode {
+        case 200...299 :
+          if let jsonArray = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? [AnyObject] {
+            var tweets = [Tweet]()
+            for objects in jsonArray {
+              if let jsonDictionary = objects as? [String: AnyObject] {
+                let tweet = Tweet(jsonDictionary)
+                tweets.append(tweet)
+              }
+            }
+          }
+        default :
+          println("default for fetchTimeline")
+        }
+      }
+    }
+  }
   
   func fetchInfoForTweet (tweetID : String, completionHandler : ([String: AnyObject]?, String?) -> () ) {
     let requestURL = "https://api.twitter.com/1.1/statuses/show.json?id=\(tweetID)"
@@ -90,7 +114,7 @@ class NetworkController {
             })
           }
           default:
-          println("default fired, fetchInfoForTweet")
+          println("default for fetchInfoForTweet")
         }
       }
     }

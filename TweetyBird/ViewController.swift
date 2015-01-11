@@ -56,7 +56,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     println(indexPath.row)
     
     let tweetVC = self.storyboard?.instantiateViewControllerWithIdentifier("TWEET_VC") as TweetViewController
-    tweetVC.networkController = self.networkController
+    tweetVC.networkVC = self.networkController
     tweetVC.tweet = self.tweets[indexPath.row]
     self.navigationController?.pushViewController(tweetVC, animated: true)
   }
