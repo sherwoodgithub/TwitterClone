@@ -17,6 +17,7 @@ class Tweet {
   var favoriteCount : String?
   var userID : String
   
+  
   init ( _ jsonDictionary : [String : AnyObject ] ) {
     let userDictionary = jsonDictionary["user"] as [String: AnyObject]
     self.text = jsonDictionary["text"] as String
@@ -24,6 +25,8 @@ class Tweet {
     self.imageURL = userDictionary["profile_image_url"] as String
     self.id = jsonDictionary["id_str"] as String
     self.userID = userDictionary["id_str"] as String
+    self.id = jsonDictionary ["id_str"] as String
+
     /*
     if jsonDictionary["in_reply_to_user_id"] is NSNull {
       println("NSNull in_reply_to_user_id Tweet()")

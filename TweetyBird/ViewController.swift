@@ -50,15 +50,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     let tweet = self.tweets[indexPath.row]
     cell.tweetLabel.text = tweet.text
     cell.userNameLabel.text = tweet.userName
-    /*if tweet.userImage == nil {
-      self.networkController.fetchUserTweetImage(tweet, completionHandler: { (image) -> () in
+    if tweet.image == nil {
+      self.networkController.fetchImageForTweet(tweet, completionHandler: { (image) -> () in
         //self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
         self.tableView.reloadData()
       })//fetchUserTweetImage
     }//iftweetimage
     else {
-      cell.tweetImage.image = tweet.userImage
-    } */
+      cell.tweetImageView.image = tweet.image
+    }
     return cell
   }
   

@@ -14,7 +14,7 @@ class TweetViewController: UIViewController {
   
   @IBOutlet weak var tweetTextLabel : UILabel!
   @IBOutlet weak var userNameLabel : UILabel!
-  @IBOutlet weak var imageView : UIImageView!
+  @IBOutlet weak var userImageButton : UIButton!
   @IBOutlet weak var favoriteLabel : UILabel!
   
   var networkVC: NetworkController!
@@ -23,7 +23,6 @@ class TweetViewController: UIViewController {
     super.viewDidLoad()
     self.tweetTextLabel.text = theTweet.text
     self.userNameLabel.text = theTweet.userName
-    self.imageView.image = theTweet.image
     
     self.networkVC.fetchInfoForTweet (theTweet.id, completionHandler: { (infoDictionary, errorDescription) -> () in
       if errorDescription == nil {
