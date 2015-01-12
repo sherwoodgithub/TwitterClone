@@ -10,7 +10,7 @@ import UIKit
 
 class TweetViewController: UIViewController {
   
-  var tweet : Tweet!
+  var theTweet : Tweet!
   
   @IBOutlet weak var tweetTextLabel : UILabel!
   @IBOutlet weak var userNameLabel : UILabel!
@@ -21,15 +21,15 @@ class TweetViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.tweetTextLabel.text = tweet.text
-    self.userNameLabel.text = tweet.userName
-    self.imageView.image = tweet.image
+    self.tweetTextLabel.text = theTweet.text
+    self.userNameLabel.text = theTweet.userName
+    self.imageView.image = theTweet.image
     
-    self.networkVC.fetchInfoForTweet (tweet.id, completionHandler: { (infoDictionary, errorDescription) -> () in
+    self.networkVC.fetchInfoForTweet (theTweet.id, completionHandler: { (infoDictionary, errorDescription) -> () in
       if errorDescription == nil {
-        self.tweet.updateWihInfo(infoDictionary!)
-        self.favoriteLabel.text = self.tweet.favoriteCount
+        self.theTweet.updateWihInfo(infoDictionary!)
       }
+      self.favoriteLabel.text = self.theTweet.favoriteCount
     })
   }
 }

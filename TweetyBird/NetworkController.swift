@@ -15,6 +15,7 @@ NSJSONSerialization: class to import JSON into this.Class
 JSONObjectWithData: method of previous (performRequestWithHandler), 3 params:
 1st param: data, reference to "data" param from line 36 (twitterRequest.perform...) closure  */
 
+import UIKit
 import Foundation
 import Accounts
 import Social
@@ -30,20 +31,19 @@ class NetworkController {
   
   func fetchHomeTimeLine (completionHandler : ([Tweet]?, String?) -> ()) {
     let accountStore = ACAccountStore()
-    // type of AccountStore is Twitter (see: .accountTypeWithAccount... )
     let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-    // third param: { (granted : ... refers to if access granted
     accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (granted: Bool, error: NSError!) -> Void in
       if granted {
-        // create accounts property with accountStore type values
         let accounts = accountStore.accountsWithAccountType(accountType)
         if !accounts.isEmpty {
           self.twitterAccount = accounts.first as? ACAccount
-          // setup url we'll make attempt to
           let requestURL = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
           let twitterRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: SLRequestMethod.GET, URL: requestURL, parameters: nil)
           twitterRequest.account = self.twitterAccount
           twitterRequest.performRequestWithHandler() { (data, response, error) -> Void in
+            if response == nil {
+              println("response BS")
+            }
             switch response.statusCode {
             case 200...299 :
 
@@ -64,6 +64,7 @@ class NetworkController {
               
             case 300...599 :
               println("Shit, our bad")
+              completionHandler(nil, "Code 300-599 fetchHomeTimeLine")
             default :
               println("Default for fetchHomeTimeLine")
             } // switch
@@ -119,7 +120,6 @@ class NetworkController {
       }
     }
   }
-  
   
   func fetchImageForTweet (tweet: Tweet, completionHandler : (UIImage?) -> () ) {
     if let imageURL = NSURL(string: tweet.imageURL) {

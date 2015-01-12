@@ -7,9 +7,6 @@
 //
 
 import UIKit
-import Accounts
-import Social
-
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -19,13 +16,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
   
   override func viewDidLoad() {
     super.viewDidLoad()
-      
+    
     self.tableView.dataSource = self
     self.tableView.delegate = self
+    self.tableView.registerNib(UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: "tweetCell")
+    self.tableView.estimatedRowHeight = 144
+    self.tableView.rowHeight = UITableViewAutomaticDimension
+    homeTimeLine()
+  }
+  
+  func homeTimeLine() {
     self.networkController.fetchHomeTimeLine { (tweets, errorString) -> () in
       if errorString == nil {
         self.tweets = tweets!
         self.tableView.reloadData()
+      } else {
+        println("unable to load")
       }
     }
   }
@@ -40,24 +46,28 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
   }
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("TWEET_CELL", forIndexPath : indexPath) as TweetCell
+    let cell = tableView.dequeueReusableCellWithIdentifier("tweetCell", forIndexPath : indexPath) as TweetCell
     let tweet = self.tweets[indexPath.row]
     cell.tweetLabel.text = tweet.text
     cell.userNameLabel.text = tweet.userName
-    if let imageURL = NSURL(string: tweet.imageURL) {
-      if let imageData = NSData(contentsOfURL: imageURL) {
-        cell.tweetImageView.image = UIImage(data: imageData)
-      }
-    }
+    /*if tweet.userImage == nil {
+      self.networkController.fetchUserTweetImage(tweet, completionHandler: { (image) -> () in
+        //self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+        self.tableView.reloadData()
+      })//fetchUserTweetImage
+    }//iftweetimage
+    else {
+      cell.tweetImage.image = tweet.userImage
+    } */
     return cell
   }
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     println(indexPath.row)
-    
     let tweetVC = self.storyboard?.instantiateViewControllerWithIdentifier("TWEET_VC") as TweetViewController
+    var tweet = self.tweets[indexPath.row]
+    tweetVC.theTweet = tweet
     tweetVC.networkVC = self.networkController
-    tweetVC.tweet = self.tweets[indexPath.row]
     self.navigationController?.pushViewController(tweetVC, animated: true)
   }
   

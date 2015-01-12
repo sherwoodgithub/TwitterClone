@@ -8,37 +8,36 @@
 
 import UIKit
 
-class UserViewController: UIViewController, UITableViewDataSource {
+class UserViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
   
   var networkController : NetworkController!
   var userID : String!
-  var tweets : [Tweet]?
+  var tweets = [Tweet]()
+  var tweetUser : Tweet!
   
   @IBOutlet weak var tableView: UITableView!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     self.tableView.dataSource = self
+    self.tableView.delegate = self
+    self.tableView.registerNib(UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: "USER_CELL")
     self.tableView.estimatedRowHeight = 144
     self.tableView.rowHeight = UITableViewAutomaticDimension
-    self.tableView.registerNib(UINib(nibName: "TweetCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: "USER_CELL")
     self.networkController.fetchTimelineForUser(self.userID, completionHandler: { (tweets, errorDescription) -> () in
-      self.tweets = tweets
+      self.tweets = tweets!
       self.tableView.reloadData()
     })
     // Do any additional setup after loading the view.
   }
   
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if let tweets = self.tweets {
       return tweets.count
-    } else {
-      return 0
-    }
   }
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("USER_CELL", forIndexPath: indexPath) as TweetCell
-    let tweet = self.tweets![indexPath.row]
+    let tweet = self.tweets[indexPath.row]
     //cell.textLabel?.text = tweet.text
     cell.tweetLabel.text = tweet.text
     cell.userNameLabel.text = tweet.userName
@@ -50,10 +49,19 @@ class UserViewController: UIViewController, UITableViewDataSource {
     } else {
       cell.tweetImageView.image = tweet.image
     }
-    
     return cell
   }
   
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let tweetVC = self.storyboard?.instantiateViewControllerWithIdentifier("TWEET_VC") as TweetViewController
+    var tweetToPass = self.tweets[indexPath.row]
+    tweetVC.theTweet = tweetToPass
+    tweetVC.networkVC = self.networkController
+    self.navigationController?.pushViewController(tweetVC, animated: true)
+  }
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+  }
   /*
   // MARK: - Navigation
   
